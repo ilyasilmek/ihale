@@ -2,11 +2,11 @@ package com.example
 
 import com.example.domain.engine.CrossDocumentAuditEngine
 import com.example.domain.engine.DocumentWithParams
-import com.example.domain.engine.ExtractedParameters
 import com.example.domain.engine.LegislationRuleEngine
 import com.example.domain.engine.SensitiveDataRedactionEngine
 import com.example.domain.engine.TurkishLanguageEngine
 import com.example.domain.model.DocumentType
+import com.example.domain.model.ExtractedParameters
 import com.example.domain.model.FindingCategory
 import com.example.domain.model.SensitiveDataType
 import com.example.domain.model.Severity
