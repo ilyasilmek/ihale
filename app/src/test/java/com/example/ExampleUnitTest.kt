@@ -22,9 +22,9 @@ class ExampleUnitTest {
         val content = "Yüklenici tarafından 10 (oniki) adet sinyal modülü teslim edilecektir."
         val findings = TurkishLanguageEngine.analyze(content, "Teknik Şartname", DocumentType.TECHNICAL_SPEC)
 
-        val numberFinding = findings.firstOrNull { it.ruleId == "RULE-LANG-NUMBER-WORD-MISMATCH" }
+        val numberFinding = findings.firstOrNull { it.ruleId == "RULE-LANG-NUMWORD" }
         assertTrue("Rakam ile yazı uyuşmazlığı tespit edilmelidir", numberFinding != null)
-        assertEquals(Severity.HIGH, numberFinding?.severity)
+        assertEquals(Severity.CRITICAL, numberFinding?.severity)
     }
 
     @Test
