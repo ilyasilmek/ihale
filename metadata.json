@@ -1,0 +1,6 @@
+{
+  "name": "Kamu İhale ve Belge Denetim",
+  "description": "Akıllı kamu ihale şartnameleri, sözleşme tasarıları ve genel belge tutarlılık, mevzuat ve yazım denetim platformu",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
