@@ -72,24 +72,30 @@ object TurkishLanguageEngine {
                 val numStr = match.groupValues[1]
                 val wordStr = match.groupValues[2].trim().lowercase()
                 val expectedWord = numberToTurkishWord(numStr.toLongOrNull() ?: -1)
-                if (expectedWord != null && !wordStr.contains(expectedWord)) {
-                    findings.add(
-                        AuditFinding(
-                            id = UUID.randomUUID().toString(),
-                            ruleId = "RULE-LANG-NUMWORD",
-                            severity = Severity.CRITICAL,
-                            category = FindingCategory.TURKISH_LANGUAGE,
-                            title = "Rakam ve Yazıyla Sayı Uyuşmazlığı: \"${match.value}\"",
-                            description = "Parantez içi yazıyla belirtilen değer ($wordStr) ile rakamsal değer ($numStr -> $expectedWord) birbiriyle uyuşmamaktadır. İhale uyuşmazlıklarında KİK ve yargı kararları yazıyla olan ifadeyi veya çelişkiyi esas alabilir.",
-                            detectedText = match.value,
-                            documentName = documentName,
-                            documentType = documentType,
-                            location = "Satır ${index + 1}",
-                            legislationRef = "4734 Sayılı Kanun ve Tip Şartname Genel Hükümleri",
-                            suggestion = "\"${match.value}\" ifadesini \"$numStr ($expectedWord)\" olarak eşitleyiniz.",
-                            confidence = ConfidenceLevel.HIGH
+                if (expectedWord != null) {
+                    val normalizedWord = wordStr.replace(Regex("[^a-zçğıöşü]"), "")
+                    val normalizedExpected = expectedWord.replace(Regex("[^a-zçğıöşü]"), "")
+                    val isMismatch = normalizedWord.isNotBlank() && normalizedWord != normalizedExpected
+
+                    if (isMismatch) {
+                        findings.add(
+                            AuditFinding(
+                                id = UUID.randomUUID().toString(),
+                                ruleId = "RULE-LANG-NUMWORD",
+                                severity = Severity.CRITICAL,
+                                category = FindingCategory.TURKISH_LANGUAGE,
+                                title = "Rakam ve Yazıyla Sayı Uyuşmazlığı: \"${match.value}\"",
+                                description = "Parantez içi yazıyla belirtilen değer ($wordStr) ile rakamsal değer ($numStr -> $expectedWord) birbiriyle uyuşmamaktadır. İhale uyuşmazlıklarında KİK ve yargı kararları yazıyla olan ifadeyi veya çelişkiyi esas alabilir.",
+                                detectedText = match.value,
+                                documentName = documentName,
+                                documentType = documentType,
+                                location = "Satır ${index + 1}",
+                                legislationRef = "4734 Sayılı Kanun ve Tip Şartname Genel Hükümleri",
+                                suggestion = "\"${match.value}\" ifadesini \"$numStr ($expectedWord)\" olarak eşitleyiniz.",
+                                confidence = ConfidenceLevel.HIGH
+                            )
                         )
-                    )
+                    }
                 }
             }
         }
